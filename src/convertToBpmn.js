@@ -32,10 +32,14 @@ function initDefinitionsTag(id) {
     };
     return definitions;
 }
-function convertP(cell) {
+function convertP(cell, cellType) {
     let pTag = {
         "_attr": {}
     };
+    let n = Number(cell.id);
+    if(!isNaN(n)) {
+        cell.id = cellType + "_" + cell.id;
+    }
     pTag["_attr"]["id"] = cell.id;
     if(cell.edge) {
         pTag["_attr"]["sourceRef"] = cell.source.id;
@@ -61,8 +65,6 @@ function convertD(cell) {
         "_attr": {},
         "_value": ""
     };
-    dTag["_attr"]["id"] = cell.id + "_di";
-    dTag["_attr"]["bpmnElement"] = cell.id;
     if(cell.edge) {
         dTag["edge"] = "true";
         // TODO 起点
@@ -116,15 +118,23 @@ function convertD(cell) {
         cellType = "sequenceFlow";
     }
     dTag["cellType"] = cellType;
+
+    let n = Number(cell.id);
+    if(!isNaN(n)) {
+        cell.id = cellType + "_" + cell.id;
+    }
+    dTag["_attr"]["id"] = cell.id + "_di";
+    dTag["_attr"]["bpmnElement"] = cell.id;
+
     return dTag;
 }
 function convertCell(cell) {
     if(!cell.geometry) {
         return null;
     }
-    let pTag = convertP(cell);
     let dTag = convertD(cell);
     let cellType = dTag.cellType;
+    let pTag = convertP(cell, cellType);
     delete dTag.cellType;
     // TODO Collaboration Tag
     return {

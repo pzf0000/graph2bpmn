@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src="data.js" type="text/javascript"></script>
+    <script src="../src/loadXML.js" type="text/javascript"></script>
+    <script>
+        function main() {
+            let len = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>".length;
+            bpmn = bpmn.slice(len + 1);
+            let tmp = loadXML(bpmn);
+            console.log(tmp);
+        }
+    </script>
+</head>
+<body onload="main()">
+
+
+</body>
+</html>
