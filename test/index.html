@@ -1,0 +1,46 @@
+<html lang="zh-CN">
+<head>
+    <title>Hello, World</title>
+    <script type="text/javascript">
+        mxBasePath = './mxGraph';
+    </script>
+    <script type="text/javascript" src="./mxGraph/mxClient.js"></script>
+    <script type="text/javascript" src="./../src/convertToBpmn.js"></script>
+    <script type="text/javascript">
+        function main(container) {
+            if (!mxClient.isBrowserSupported()) {
+                mxUtils.error('Browser is not supported!', 200, false);
+            } else {
+                mxEvent.disableContextMenu(container);
+				var graph = new mxGraph(container);
+                new mxRubberband(graph);
+                var parent = graph.getDefaultParent();
+                graph.getModel().beginUpdate();
+                try {
+                    var v1 = graph.insertVertex(parent, "startEvent", 'Start', 100, 100, 80, 30, "shape=ellipse");
+                    v1.props = {};
+                    v1.props.email = "hah";
+                    var v2 = graph.insertVertex(parent, "endEvent", 'End', 500, 600, 80, 30, "shape=ellipse");
+                    v2.props = {};
+                    v2.props.X = {};
+                    v2.props.X.value = 2;
+                    var e1 = graph.insertEdge(parent, "sequenceFlow", '', v1, v2);
+                } finally {
+                    graph.getModel().endUpdate();
+                }
+                graph.props = {};
+                graph.props.id = 2;
+                console.log(graph);
+                console.log(convert(graph));
+            }
+        }
+    </script>
+</head>
+
+<body onload="main(document.getElementById('graphContainer'))">
+
+<div id="graphContainer"
+     style="position:relative;overflow:hidden;width:100%;height:100%;cursor:default;">
+</div>
+</body>
+</html>
